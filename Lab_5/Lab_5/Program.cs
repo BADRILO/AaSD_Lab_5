@@ -5,6 +5,35 @@ namespace Lab_5
 {
     class Program
     {
+        static void combinedQuickSort(List<int> list)
+        {
+            void rec(int start, int end)
+            {
+                if (end - start < 10)
+                {
+                    insertionSort(list, start, end);
+                    return;
+                }
+
+                int pivot_index = start;
+
+                for (int temp, i = start + 1; i < end; i++)
+                {
+                    if (list[i] <= list[pivot_index])
+                    {
+                        temp = list[i];
+                        list.RemoveAt(i);
+                        list.Insert(pivot_index++, temp);
+                    }
+                }
+
+                rec(start, pivot_index);
+                rec(pivot_index + 1, end);
+            }
+
+            rec(0, list.Count);
+        }
+
         static void ordinaryQuickSort(List<int> list)
         {
             void rec(int start, int end)
@@ -33,17 +62,23 @@ namespace Lab_5
             rec(0, list.Count);
         }
 
-        static void insertionSort(List<int> list)
+        static void insertionSort(List<int> list, int start = 0, int end = -1)
         {
+            if (start < 0 || end < 0 || start >= list.Count || end > list.Count || start - end > -1)
+            {
+                start = 0;
+                end = list.Count;
+            }
+
             int current;
             int insert_position;
 
-            for (int i = 1; i < list.Count; i++)
+            for (int i = start + 1; i < end; i++)
             {
                 current = list[i];
                 insert_position = i;
                 
-                while(insert_position != 0 && current < list[insert_position - 1])
+                while(insert_position != start && current < list[insert_position - 1])
                 {
                     insert_position--;
                 }
@@ -51,7 +86,6 @@ namespace Lab_5
                 list.RemoveAt(i);
                 list.Insert(insert_position, current);
             }
-
         }
 
         static List<int> generateList(int length)
@@ -75,13 +109,12 @@ namespace Lab_5
             Console.WriteLine("\n");
         }
 
-        //65318724
         static void Main(string[] args)
         {
             List<int> testList = generateList(100);
             printList(testList);
 
-            ordinaryQuickSort(testList);
+            combinedQuickSort(testList);
             printList(testList);
         }
     }
