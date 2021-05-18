@@ -54,6 +54,18 @@ namespace Lab_5
 
         }
 
+        static List<int> generateList(int length)
+        {
+            List<int> list = new(length);
+            Random random = new();
+
+            for (int i = 0; i < length; i++)
+            {
+                list.Add(random.Next(1000));
+            }
+            return list;
+        }
+
         static void printList(List<int> list)
         {
             foreach (int item in list)
@@ -66,7 +78,7 @@ namespace Lab_5
         //65318724
         static void Main(string[] args)
         {
-            List<int> testList = new() { 6, 5, 3, 1, 8, 7, 2, 4 };
+            List<int> testList = generateList(100);
             printList(testList);
 
             ordinaryQuickSort(testList);
