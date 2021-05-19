@@ -11,23 +11,23 @@ namespace Lab_5
         {
             void rec(int start, int end)
             {
+                //recursion base
                 if (end - start < 10)
                 {
-                    int current;
-                    int insert_position;
+                    int current;         //item to be inserted
+                    int position;        //position of this item
 
                     for (int i = start + 1; i < end; i++)
                     {
                         current = list[i];
-                        insert_position = i;
+                        position = i;
 
-                        while (insert_position != start && current < list[insert_position - 1])
+                        while (position != start && list[position - 1] > current)
                         {
-                            insert_position--;
+                            list[position] = list[position - 1];
+                            list[position - 1] = current;
+                            position--;
                         }
-
-                        list.RemoveAt(i);
-                        list.Insert(insert_position, current);
                     }
                     return;
                 }
@@ -37,6 +37,7 @@ namespace Lab_5
 
                 for (int temp, i = start + 1; i < end; i++)
                 {
+                    //bring to the left side all items that are smaller than pivot
                     if (list[i] <= pivot_value)
                     {
                         pivot_index++;
@@ -45,6 +46,7 @@ namespace Lab_5
                         list[i] = temp;
                     }
                 }
+                //put the pivot in its place
                 list[start] = list[pivot_index];
                 list[pivot_index] = pivot_value;
 
@@ -59,16 +61,19 @@ namespace Lab_5
         {
             void rec(int start, int end)
             {
+                //recursion base
                 if (end - start < 2)
                 {
                     return;
                 }
 
-                int pivot_index = start;
+
+                int pivot_index = start;        
                 int pivot_value = list[start];
 
                 for (int temp, i = start + 1; i < end; i++)
                 {
+                    //bring to the left side all items that are smaller than pivot
                     if (list[i] <= pivot_value)
                     {
                         pivot_index++;
@@ -77,6 +82,7 @@ namespace Lab_5
                         list[i] = temp;
                     }
                 }
+                //put the pivot in its place
                 list[start] = list[pivot_index];
                 list[pivot_index] = pivot_value;
                 
@@ -87,29 +93,23 @@ namespace Lab_5
             rec(0, list.Count);
         }
 
-        static void insertionSort(List<int> list, int start = 0, int end = -1)
+        static void insertionSort(List<int> list)
         {
-            if (start < 0 || end < 0 || start >= list.Count || end > list.Count || start - end > -1)
-            {
-                start = 0;
-                end = list.Count;
-            }
+            int current;         //item to be inserted
+            int position;        //position of this item
 
-            int current;
-            int insert_position;
-
-            for (int i = start + 1; i < end; i++)
+            for (int i = 1; i < list.Count; i++)
             {
-                current = list[i];
-                insert_position = i;
+                current = list[i];  
+                position = i;
                 
-                while(insert_position != start && current < list[insert_position - 1])
+                while(position != 0 && list[position - 1] > current)
                 {
-                    insert_position--;
+                    //swap
+                    list[position] = list[position - 1];
+                    list[position - 1] = current;
+                    position--;
                 }
-
-                list.RemoveAt(i);
-                list.Insert(insert_position, current);
             }
         }
 
@@ -120,7 +120,7 @@ namespace Lab_5
 
             for (int i = 0; i < length; i++)
             {
-                list.Add(random.Next(-2000, 2000));
+                list.Add(random.Next(9999));
             }
             return list;
         }
@@ -129,7 +129,7 @@ namespace Lab_5
         {
             foreach (int item in list)
             {
-                Console.Write($"{item, -3} ");
+                Console.Write($"{item, -4} ");
             }
             Console.WriteLine("\n");
         }
@@ -146,7 +146,6 @@ namespace Lab_5
             printList(testList);
             printList(testList1);
             printList(testList2);
-
 
 
             Console.WriteLine("COMBINED QUICK SORT");
@@ -167,13 +166,12 @@ namespace Lab_5
 
 
 
-
-            //Console.WriteLine("INSERTION SORT");
-            //stopwatch.Restart();
-            //insertionSort(testList2);
-            //stopwatch.Stop();
-            //printList(testList2);
-            //Console.WriteLine("Elapsed time:" + stopwatch.ElapsedTicks + ";\n\n");
+            Console.WriteLine("INSERTION SORT");
+            stopwatch.Restart();
+            insertionSort(testList2);
+            stopwatch.Stop();
+            printList(testList2);
+            Console.WriteLine("Elapsed time:" + stopwatch.ElapsedTicks + ";\n\n");
         }
     }
 }
